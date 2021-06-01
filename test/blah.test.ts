@@ -8,11 +8,6 @@ describe('blah', () => {
       measureBezier([0, 0], [0.5, 1], [1, 0]);
     }).not.toThrowError();
   });
-  it('works different type', () => {
-    measureBezier(0, 0, 0.5, -1, -1, 0);
-    measureBezier({ x: 0, y: 0 }, { x: 0.5, y: 1 }, { x: 1, y: 0 });
-    measureBezier([0, 0], [0.5, 1], [1, 0]);
-  });
   const { getInfo, isHit } = measureBezier(0, 0, 0.5, 1, 1, 0);
   it('works', () => {
     expect(

@@ -1,8 +1,15 @@
 # Is Hit Quadratic Bezier 
 
 ## demo
-add later
+[codepen Demo](https://codepen.io/voderl/pen/dyvJQmp?editors=1010)
 
+## install
+```sh
+yarn add is-hit-quadratic-bezier
+```
+```html
+<script src="https://unpkg.com/is-hit-quadratic-bezier@1.0.3/dist/is-hit-quadratic-bezier.umd.production.min.js"></script>
+```
 ## usage
 ```js
 import measureBezier from 'is-hit-quadratic-bezier';
@@ -15,7 +22,7 @@ const { isHit, getInfo } = measureBezier([fromX, fromY], [controlPointX, control
 
 const { isHit, getInfo } = measureBezier({
   x: fromX,
-  y:  fromY,
+  y: fromY,
 }, {
   x: controlPointX,
   y: controlPointY,
@@ -45,7 +52,8 @@ const { distance, point } = getInfo({
   y: y
 })
 ```
+
 ## reference
-The calculation algorithm comes from : 
+The calculation algorithm comes from :   
 https://www.shadertoy.com/view/MlKcDD
 https://www.shadertoy.com/view/4dsfRS

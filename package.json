@@ -1,9 +1,20 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.2",
   "license": "MIT",
+  "name": "is-hit-quadratic-bezier",
+  "description": "calculate the distance from a point to the quadratic bezier curve, the closest point in the bezier curve.",
+  "author": "voderl",
+  "keywords": [
+    "bezier",
+    "interaction"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/is-hit-quadratic-bezier.esm.js",
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md"
   ],
   "engines": {
     "node": ">=10"
@@ -13,7 +24,7 @@
     "build": "tsdx build --format cjs,esm,umd",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "yarn build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -29,11 +40,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "is-hit-quadratic-bezier",
-  "author": "voderl",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "module": "dist/is-hit-quadratic-bezier.esm.js",
   "size-limit": [
     {
       "path": "dist/is-hit-quadratic-bezier.cjs.production.min.js",
