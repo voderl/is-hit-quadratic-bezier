@@ -59,7 +59,7 @@ function baseMeasureBezier(
   toY: number
 ) {
   const isRoughHit = createIsRoughHit(fromX, fromY, cpX, cpY, toX, toY);
-  const baseCalDistance = createCalDistanceToBezier(
+  const { getDistance, getInfo } = createCalDistanceToBezier(
     fromX,
     fromY,
     cpX,
@@ -71,7 +71,7 @@ function baseMeasureBezier(
     // rough hit
     if (!isRoughHit(x, y, hitDistance)) return false;
     //  analyical
-    return baseCalDistance(x, y) <= hitDistance;
+    return getDistance(x, y) <= hitDistance;
   }
 
   function isHit(p: [number, number], hitDistance: number): boolean;
@@ -88,13 +88,16 @@ function baseMeasureBezier(
   }
   return {
     isHit,
-    getDistance(
+    getInfo(
       a: number | { x: number; y: number } | [number, number],
       b?: number
-    ): number {
-      if (typeof a === 'number') return baseCalDistance(a, b);
-      if (Array.isArray(a)) return baseCalDistance(a[0], a[1]);
-      return baseCalDistance(a.x, a.y);
+    ): {
+      distance: number;
+      point: [number, number];
+    } {
+      if (typeof a === 'number') return getInfo(a, b);
+      if (Array.isArray(a)) return getInfo(a[0], a[1]);
+      return getInfo(a.x, a.y);
     },
   };
 }

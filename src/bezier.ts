@@ -165,8 +165,7 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
   const kx = kk * dot(a, b);
   const kx_2 = kx * kx;
   const dot_a = dot(a, a);
-  return function calDistanceToBezier(pX, pY) {
-    const d = [sX - pX, sY - pY];
+  function calBezierTValues(d: [number, number]) {
     const ky = (kk * (2.0 * dot_a + dot(d, b))) / 3.0;
     const kz = kk * dot(d, a);
     const p = ky - kx_2;
@@ -184,9 +183,7 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
         0.0,
         1.0
       );
-      return sqrt(
-        dot2(d[0] + (c[0] + b[0] * t) * t, d[1] + (c[1] + b[1] * t) * t)
-      );
+      return t;
     } else {
       const z = sqrt(-p);
       const v = acos(q / (p * z * 2.0)) / 3.0;
@@ -194,6 +191,19 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
       const n = sin(v) * 1.732050808;
       const t_0 = clamp((m + m) * z - kx, 0, 1);
       const t_1 = clamp((-n - m) * z - kx, 0, 1);
+      return [t_0, t_1];
+    }
+  }
+  return {
+    getDistance(pX, pY): number {
+      const d: [number, number] = [sX - pX, sY - pY];
+      const t = calBezierTValues(d);
+      if (typeof t === 'number') {
+        return sqrt(
+          dot2((c[0] + b[0] * t) * t + d[0], (c[1] + b[1] * t) * t + d[1])
+        );
+      }
+      const [t_0, t_1] = t as [number, number];
       return sqrt(
         min(
           dot2(
@@ -206,6 +216,40 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
           )
         )
       );
-    }
+    },
+    getInfo(
+      pX,
+      pY
+    ): {
+      distance: number;
+      point: [number, number];
+    } {
+      const d: [number, number] = [sX - pX, sY - pY];
+      const t = calBezierTValues(d);
+      if (typeof t === 'number') {
+        const p_x = (c[0] + b[0] * t) * t + d[0];
+        const p_y = (c[1] + b[1] * t) * t + d[1];
+        return {
+          distance: sqrt(dot2(p_x, p_y)),
+          point: [p_x + pX, p_y + pY],
+        };
+      }
+      const [t_0, t_1] = t as [number, number];
+      const p_0_x = (c[0] + b[0] * t_0) * t_0 + d[0];
+      const p_0_y = (c[1] + b[1] * t_0) * t_0 + d[1];
+      const p_1_x = (c[0] + b[0] * t_1) * t_1 + d[0];
+      const p_1_y = (c[1] + b[1] * t_1) * t_1 + d[1];
+      const d_0 = dot2(p_0_x, p_0_y);
+      const d_1 = dot2(p_1_x, p_1_y);
+      return d_0 >= d_1
+        ? {
+            distance: sqrt(d_1),
+            point: [p_1_x + pX, p_1_y + pY],
+          }
+        : {
+            distance: sqrt(d_0),
+            point: [p_0_x + pX, p_0_y + pY],
+          };
+    },
   };
 }
