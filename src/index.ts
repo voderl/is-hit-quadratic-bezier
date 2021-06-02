@@ -31,7 +31,7 @@ function createIsRoughHit(fromX, fromY, cpX, cpY, toX, toY) {
   const t_cp = transform(cpX, cpY);
   const t_to = transform(toX, toY);
   const ratio = Math.abs(t_from.x);
-  const [bottom, top] = [t_cp.y, 0].sort(sorter);
+  const [bottom, top] = [t_cp.y / 2, 0].sort(sorter);
   let left, right;
   if (t_cp.x >= t_from.x && t_cp.x <= t_to.y) {
     [left, right] = [t_from.x, t_to.x];
