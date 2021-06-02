@@ -8,7 +8,7 @@
 yarn add is-hit-quadratic-bezier
 ```
 ```html
-<script src="https://unpkg.com/is-hit-quadratic-bezier@1.0.3/dist/is-hit-quadratic-bezier.umd.production.min.js"></script>
+<script src="https://unpkg.com/is-hit-quadratic-bezier@1.0.4/dist/is-hit-quadratic-bezier.umd.production.min.js"></script>
 ```
 ## usage
 ```js
@@ -55,5 +55,5 @@ const { distance, point } = getInfo({
 
 ## reference
 The calculation algorithm comes from :   
-https://www.shadertoy.com/view/MlKcDD
+https://www.shadertoy.com/view/MlKcDD  
 https://www.shadertoy.com/view/4dsfRS
