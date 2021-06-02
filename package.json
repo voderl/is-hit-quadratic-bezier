@@ -8,6 +8,14 @@
     "bezier",
     "interaction"
   ],
+  "homepage": "https://github.com/voderl/is-hit-quadratic-bezier#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/voderl/is-hit-quadratic-bezier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voderl/is-hit-quadratic-bezier/issues"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/is-hit-quadratic-bezier.esm.js",
