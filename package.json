@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "name": "is-hit-quadratic-bezier",
   "description": "calculate the distance from a point to the quadratic bezier curve, the closest point in the bezier curve.",
