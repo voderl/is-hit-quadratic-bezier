@@ -11,13 +11,9 @@ function transformCoord(rotation: number, dx: number, dy: number) {
   };
 }
 
+const atan2 = Math.atan2;
 function calculateRotation(dx: number, dy: number) {
-  if (dx === 0) {
-    return (-Math.sign(dy) * Math.PI) / 2;
-  }
-  const rotation = Math.atan(dy / dx);
-  if (dx > 0) return rotation;
-  return Math.sign(dy) * (Math.PI - Math.abs(rotation));
+  return atan2(dy, dx);
 }
 
 const sorter = (a: number, b: number) => a - b;
