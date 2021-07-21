@@ -68,6 +68,8 @@ function baseMeasureBezier(
     toY
   );
   function baseIsHit(x: number, y: number, hitDistance: number): boolean {
+    if (typeof hitDistance !== 'number')
+      throw new Error(`isHit params "hitDistance" must be a number`);
     // rough hit
     if (!isRoughHit(x, y, hitDistance)) return false;
     //  analyical
