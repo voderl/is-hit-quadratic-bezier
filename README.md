@@ -43,7 +43,7 @@ isHit([x,y], hitDistance);
 ```
 
 ## getInfo
-calculate the distance from a point to the bezier curve, the closest point in bezier curve.
+calculate the distance from a point to the bezier curve, the closest point on the bezier curve.
 ```js
 const { distance, point } = getInfo(x, y);
 const { distance, point } = getInfo([x, y]);
@@ -52,6 +52,7 @@ const { distance, point } = getInfo({
   y: y
 })
 ```
+if you use this function, please don't call `isHit` above, which maybe leading to calculate twice. Just use `distance <= hitDistance` manually.
 
 ## reference
 The calculation algorithm comes from :   
