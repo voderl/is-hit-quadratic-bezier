@@ -165,6 +165,7 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
   const kx = kk * dot(a, b);
   const kx_2 = kx * kx;
   const dot_a = dot(a, a);
+  const SQRT_3 = Math.pow(3, 1 / 2);
   function calBezierTValues(d: [number, number]) {
     const ky = (kk * (2.0 * dot_a + dot(d, b))) / 3.0;
     const kz = kk * dot(d, a);
@@ -188,7 +189,7 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
       const z = sqrt(-p);
       const v = acos(q / (p * z * 2.0)) / 3.0;
       const m = cos(v);
-      const n = sin(v) * 1.732050808;
+      const n = sin(v) * SQRT_3;
       const t_0 = clamp((m + m) * z - kx, 0, 1);
       const t_1 = clamp((-n - m) * z - kx, 0, 1);
       return [t_0, t_1];
