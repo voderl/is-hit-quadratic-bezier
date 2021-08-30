@@ -167,6 +167,12 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
   const dot_a = dot(a, a);
   const SQRT_3 = Math.pow(3, 1 / 2);
   function calBezierTValues(d: [number, number]) {
+    if (dot(b, b) === 0) {
+      const p = 2 * dot_a + dot(b, d);
+      if (p === 0) return 0;
+      const q = dot(a, d);
+      return clamp(-q / p, 0, 1);
+    }
     const ky = (kk * (2.0 * dot_a + dot(d, b))) / 3.0;
     const kz = kk * dot(d, a);
     const p = ky - kx_2;
