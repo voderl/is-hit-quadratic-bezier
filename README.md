@@ -8,7 +8,7 @@
 yarn add is-hit-quadratic-bezier
 ```
 ```html
-<script src="https://unpkg.com/is-hit-quadratic-bezier@1.0.5/dist/is-hit-quadratic-bezier.umd.production.min.js"></script>
+<script src="https://unpkg.com/is-hit-quadratic-bezier@1.0.6/dist/is-hit-quadratic-bezier.umd.production.min.js"></script>
 ```
 ## usage
 ```js
