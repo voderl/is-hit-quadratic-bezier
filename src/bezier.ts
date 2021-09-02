@@ -140,16 +140,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	fragColor = vec4(col,1.0);
 }
  */
-const sqrt = Math.sqrt;
-const min = Math.min;
-const sign = Math.sign;
-const abs = Math.abs;
-const pow = Math.pow;
-const acos = Math.acos;
-const cos = Math.cos;
-const sin = Math.sin;
-function clamp(x, min, max) {
-  return Math.min(Math.max(x, min), max);
+const { sqrt, min, max, sign, abs, pow, acos, cos, sin } = Math;
+function clamp(x, min_n, max_n) {
+  return min(max(x, min_n), max_n);
 }
 function dot(x, y) {
   return x[0] * y[0] + x[1] * y[1];
@@ -165,51 +158,51 @@ export default function createCalDistanceToBezier(sX, sY, cpX, cpY, eX, eY) {
   const kx = kk * dot(a, b);
   const kx_2 = kx * kx;
   const dot_a = dot(a, a);
-  const SQRT_3 = Math.pow(3, 1 / 2);
-  function calBezierTValues(d: [number, number]) {
-    if (dot(b, b) === 0) {
-      const p = 2 * dot_a + dot(b, d);
-      if (p === 0) return 0;
-      const q = dot(a, d);
-      return clamp(-q / p, 0, 1);
-    }
-    const ky = (kk * (2.0 * dot_a + dot(d, b))) / 3.0;
-    const kz = kk * dot(d, a);
-    const p = ky - kx_2;
-    const p3 = p * p * p;
-    const q = kx * (2.0 * kx_2 - 3.0 * ky) + kz;
-    let h = q * q + 4.0 * p3;
-    if (h >= 0.0) {
-      h = sqrt(h);
-      const x_0 = (h - q) / 2.0;
-      const x_1 = (-h - q) / 2.0;
-      const t = clamp(
-        sign(x_0) * pow(abs(x_0), 1 / 3) +
-          sign(x_1) * pow(abs(x_1), 1 / 3) -
-          kx,
-        0.0,
-        1.0
-      );
-      return t;
-    } else {
-      const z = sqrt(-p);
-      const v = acos(q / (p * z * 2.0)) / 3.0;
-      const m = cos(v);
-      const n = sin(v) * SQRT_3;
-      const t_0 = clamp((m + m) * z - kx, 0, 1);
-      const t_1 = clamp((-n - m) * z - kx, 0, 1);
-      return [t_0, t_1];
-    }
-  }
+  const SQRT_3 = pow(3, 1 / 2);
+  const calBezierTValues =
+    dot(b, b) === 0
+      ? // bezier fallback to line or point
+        function calBezierTValues(d: [number, number]) {
+          return dot_a === 0 ? 0 : clamp(-dot(a, d) / 2 / dot_a, 0, 1);
+        }
+      : function calBezierTValues(d: [number, number]) {
+          const ky = (kk * (2.0 * dot_a + dot(d, b))) / 3.0;
+          const kz = kk * dot(d, a);
+          const p = ky - kx_2;
+          const p3 = p * p * p;
+          const q = kx * (2.0 * kx_2 - 3.0 * ky) + kz;
+          let h = q * q + 4.0 * p3;
+          if (h >= 0.0) {
+            h = sqrt(h);
+            const x_0 = (h - q) / 2.0;
+            const x_1 = (-h - q) / 2.0;
+            const t = clamp(
+              sign(x_0) * pow(abs(x_0), 1 / 3) +
+                sign(x_1) * pow(abs(x_1), 1 / 3) -
+                kx,
+              0.0,
+              1.0
+            );
+            return t;
+          } else {
+            const z = sqrt(-p);
+            const v = acos(q / (p * z * 2.0)) / 3.0;
+            const m = cos(v);
+            const n = sin(v) * SQRT_3;
+            return [
+              clamp((m + m) * z - kx, 0, 1),
+              clamp((-n - m) * z - kx, 0, 1),
+            ];
+          }
+        };
   return {
     getDistance(pX, pY): number {
       const d: [number, number] = [sX - pX, sY - pY];
       const t = calBezierTValues(d);
-      if (typeof t === 'number') {
+      if (typeof t === 'number')
         return sqrt(
           dot2((c[0] + b[0] * t) * t + d[0], (c[1] + b[1] * t) * t + d[1])
         );
-      }
       const [t_0, t_1] = t as [number, number];
       return sqrt(
         min(
